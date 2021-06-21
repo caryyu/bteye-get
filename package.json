@@ -48,7 +48,13 @@
     "url": "git://github.com/feross/simple-get.git"
   },
   "scripts": {
-    "test": "standard && tape test/*.js"
+    "test": "standard && tape test/*.js",
+    "test-single": "tape test/headers.js"
+  },
+  "standard": {
+    "ignore": [
+      "request.js"
+    ]
   },
   "funding": [
     {

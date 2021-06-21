@@ -2,12 +2,11 @@
 module.exports = simpleGet
 
 const concat = require('simple-concat')
-const decompressResponse = require('decompress-response') // excluded from browser build
-const http = require('http')
-const https = require('https')
+// const decompressResponse = require('decompress-response') // excluded from browser build
 const once = require('once')
 const querystring = require('querystring')
 const url = require('url')
+const HttpRequest = require('./request')
 
 const isStream = o => o !== null && typeof o === 'object' && typeof o.pipe === 'function'
 
@@ -44,8 +43,9 @@ function simpleGet (opts, cb) {
   if (opts.json) opts.headers.accept = 'application/json'
   if (opts.method) opts.method = opts.method.toUpperCase()
 
-  const protocol = opts.protocol === 'https:' ? https : http // Support http/https urls
-  const req = protocol.request(opts, res => {
+  // const protocol = opts.protocol === 'https:' ? https : http // Support http/https urls
+  // const req = protocol.request(opts, res => {
+  const req = new HttpRequest().request(opts, res => {
     if (opts.followRedirects !== false && res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
       opts.url = res.headers.location // Follow 3xx redirects
       delete opts.headers.host // Discard `host` header on redirect (see #32)
@@ -60,8 +60,9 @@ function simpleGet (opts, cb) {
       else return simpleGet(opts, cb)
     }
 
-    const tryUnzip = typeof decompressResponse === 'function' && opts.method !== 'HEAD'
-    cb(null, tryUnzip ? decompressResponse(res) : res)
+    // const tryUnzip = typeof decompressResponse === 'function' && opts.method !== 'HEAD'
+    // cb(null, tryUnzip ? decompressResponse(res) : res)
+    cb(null, req.decompress(opts, res))
   })
   req.on('timeout', () => {
     req.abort()

@@ -1,3 +1,4 @@
+require('./mocks')
 const concat = require('simple-concat')
 const get = require('../')
 const http = require('http')

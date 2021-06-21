@@ -1,3 +1,4 @@
+require('./mocks')
 const get = require('../')
 const http = require('http')
 const str = require('string-to-stream')
