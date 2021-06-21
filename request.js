@@ -1,5 +1,3 @@
-const decompressResponse = require('decompress-response') // excluded from browser build
-const zlib = require('zlib')
 const http = require('http')
 const https = require('https')
 const { PassThrough } = require('stream')
@@ -31,15 +29,6 @@ class HttpRequest extends PassThrough {
     }
   }
 
-  decompress(opts, res) {
-    if (!isTamperMonkeySupported) {
-      const tryUnzip = typeof decompressResponse === 'function' && opts.method !== 'HEAD'
-      return tryUnzip ? decompressResponse(res) : res
-    } else {
-      return res
-    }
-  }
-
   request (opts, cb) {
     if (isTamperMonkeySupported) {
       opts.responseType = opts.json ? 'json' : 'arraybuffer'
@@ -48,19 +37,11 @@ class HttpRequest extends PassThrough {
       opts.onloadstart = () => this.emit('socket')
       opts.onload = _res => {
         const res = new PassThrough()
-        res.statusCode = _res.status
-        res.headers = _res.responseHeaders
+        res.statusCode = _res['status']
+        res.headers = _res['responseHeaders']
         cb(res)
-        const contentEncoding = (res.headers['content-encoding'] || '').toLowerCase();
-        if (!['gzip', 'deflate', 'br'].includes(contentEncoding) || opts.method === 'HEAD') {
-          res.write(_res.response)
-          res.end()
-        } else {
-          const w = new PassThrough()
-          w.pipe(zlib.createUnzip()).pipe(res)
-          w.write(_res.response)
-          w.end()
-        }
+        res.write(_res['response'])
+        res.end()
       }
       const req = new PassThrough()
       req.abort = () => { 

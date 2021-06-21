@@ -143,7 +143,9 @@ test('rewrite POST redirects to GET', function (t) {
       t.equal(req.method, 'GET')
       t.notOk(req.headers['content-length'])
       res.statusCode = 200
-      req.pipe(res)
+      res.end()
+      // what is the defference between req.pipe(res) and res.end()?
+      // req.pipe(res)
     } else {
       t.equal(req.method, 'POST')
       redirected = true

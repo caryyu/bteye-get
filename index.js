@@ -2,7 +2,7 @@
 module.exports = simpleGet
 
 const concat = require('simple-concat')
-// const decompressResponse = require('decompress-response') // excluded from browser build
+const decompressResponse = require('decompress-response') // excluded from browser build
 const once = require('once')
 const querystring = require('querystring')
 const url = require('url')
@@ -60,9 +60,8 @@ function simpleGet (opts, cb) {
       else return simpleGet(opts, cb)
     }
 
-    // const tryUnzip = typeof decompressResponse === 'function' && opts.method !== 'HEAD'
-    // cb(null, tryUnzip ? decompressResponse(res) : res)
-    cb(null, req.decompress(opts, res))
+    const tryUnzip = typeof decompressResponse === 'function' && opts.method !== 'HEAD'
+    cb(null, tryUnzip ? decompressResponse(res) : res)
   })
   req.on('timeout', () => {
     req.abort()

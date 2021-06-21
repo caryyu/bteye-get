@@ -1,7 +1,6 @@
 const http = require('http')
 const https = require('https')
 global.GM_xmlhttpRequest = function (opts) {
-  console.log('calling')
   const protocol = opts.protocol === 'https:' ? https : http
   const req = protocol.request(opts, res => {
     const chunks = []
