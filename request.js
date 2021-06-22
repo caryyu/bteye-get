@@ -31,7 +31,8 @@ class HttpRequest extends PassThrough {
 
   request (opts, cb) {
     if (isTamperMonkeySupported) {
-      opts.responseType = opts.json ? 'json' : 'arraybuffer'
+      opts.url = `${opts.protocol}//${opts.hostname}${opts.path}`
+      opts.responseType = 'arraybuffer'
       opts.onerror = err => this.emit('error', err)
       opts.ontimeout = () => this.emit('timeout')
       opts.onloadstart = () => this.emit('socket')
@@ -40,7 +41,7 @@ class HttpRequest extends PassThrough {
         res.statusCode = _res['status']
         res.headers = _res['responseHeaders']
         cb(res)
-        res.write(_res['response'])
+        res.write(Buffer.from(_res['response']))
         res.end()
       }
       const req = new PassThrough()
