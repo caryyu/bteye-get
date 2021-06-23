@@ -1,17 +1,17 @@
 {
-  "name": "simple-get",
-  "description": "Simplest way to make http get requests. Supports HTTPS, redirects, gzip/deflate, streams in < 100 lines.",
+  "name": "bteye-get",
+  "description": "A TamperMonkey `GM_xmlhttpRequest` supported project, originated from feross/simple-get",
   "version": "4.0.0",
   "author": {
-    "name": "Feross Aboukhadijeh",
-    "email": "feross@feross.org",
-    "url": "https://feross.org"
+    "name": "caryyu",
+    "email": "caryyu.tg@gmail.com",
+    "url": "https://caryyu.top"
   },
   "browser": {
     "decompress-response": false
   },
   "bugs": {
-    "url": "https://github.com/feross/simple-get/issues"
+    "url": "https://github.com/caryyu/bteye-get/issues"
   },
   "dependencies": {
     "decompress-response": "^6.0.0",
@@ -24,7 +24,7 @@
     "string-to-stream": "^3.0.0",
     "tape": "^5.0.0"
   },
-  "homepage": "https://github.com/feross/simple-get",
+  "homepage": "https://github.com/caryyu/bteye-get",
   "keywords": [
     "request",
     "http",
@@ -45,29 +45,14 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/feross/simple-get.git"
+    "url": "git://github.com/caryyu/bteye-get.git"
   },
   "scripts": {
-    "test": "standard && tape test/*.js",
-    "test-single": "tape test/headers.js"
+    "test": "standard && tape test/*.js"
   },
   "standard": {
     "ignore": [
       "request.js"
     ]
-  },
-  "funding": [
-    {
-      "type": "github",
-      "url": "https://github.com/sponsors/feross"
-    },
-    {
-      "type": "patreon",
-      "url": "https://www.patreon.com/feross"
-    },
-    {
-      "type": "consulting",
-      "url": "https://feross.org/support"
-    }
-  ]
+  }
 }
